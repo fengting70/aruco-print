@@ -24,19 +24,20 @@
 
         <!-- Add your site or application content here -->
         <div class="container no-print">
-            <h1>Generate ArUco Markers for printing</h1>
-            <p><strong>Use CTRL+P or the file-menu for printing</strong>.</p>
+  <h1>Generate ArUco Markers (DICT_6X6_250) for printing</h1>
+   <p><strong>Use CTRL+P or the file-menu for printing</strong>.</p>
+   <p>Dictionary: OpenCV <code>cv::aruco::DICT_6X6_250</code> (6×6 grid, 250 markers, IDs 0-249)</p>
             <form class="pure-form pure-form-stacked">
                 <div class="pure-control-group">
                     <label for="marker-count">number of markers</label>
-                    <input class="" value="20" type="text" id="marker-count"></input>
+                    <input class="" value="10" type="text" id="marker-count"></input>
                 </div>
                 <label for="marker-random" class="pure-checkbox">
                     <input id="marker-random" type="checkbox" value="" checked>
-                    random IDs
+                    random IDs (0-249)
                 </label>
                 <div class="pure-control-group">
-                    <label for="marker-ids">IDs to print, seperated by comma (will ignore number of markers)</label>
+                    <label for="marker-ids">IDs to print, separated by comma (will ignore number of markers, max 249)</label>
                     <input class="pure-input-2-3" value="0,1,2,3,4" type="text" id="marker-ids"></input>
                 </div>
                 <div class="pure-control-group">

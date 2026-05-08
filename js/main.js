@@ -15,7 +15,7 @@
     var width = '2cm';
     var spacing = '0.2cm';
 
-    var MAX_CODES = 1024;
+    var MAX_CODES = 250;
 
     var rand_num = function(max) {
         var r = Math.random();
