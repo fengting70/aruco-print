@@ -284,40 +284,30 @@ function ArucoMarker(id) {
 }
 
 ArucoMarker.prototype = {
-  // Get the 6x6 marker grid (including border)
-  markerGrid: function() {
+  // Get the 6x6 inner marker matrix (from OpenCV DICT_6X6_250)
+  markerMatrix: function() {
     var bits = DICT_6X6_250[this.id];
-    var grid = [];
+    var matrix = [];
     for (var row = 0; row < 6; row++) {
-      grid.push(bits.slice(row * 6, (row + 1) * 6));
+      matrix.push(bits.slice(row * 6, (row + 1) * 6));
     }
-    return grid;
+    return matrix;
   },
 
-  // Get the inner 4x4 content (without border)
-  innerMatrix: function() {
-    var grid = this.markerGrid();
-    var inner = [];
-    for (var row = 1; row < 5; row++) {
-      inner.push(grid[row].slice(1, 5));
-    }
-    return inner;
-  },
-
-  // Create an SVG image of the marker
-  // Approach: black background = border, white rectangles = inner cells with bit=1
+  // Create an SVG image of the marker (8x8: 1-cell border + 6x6 inner content)
+  // Similar to original 5x5 markers which rendered as 7x7 (1-cell border + 5x5 inner)
   toSVG: function(size) {
-    var inner = this.innerMatrix();
+    var matrix = this.markerMatrix();
     var sizeAttr = size ? ('height="' + size + '" width="' + size + '"') : '';
     
-    var svg = '<svg ' + sizeAttr + ' viewBox="0 0 6 6" version="1.1" xmlns="http://www.w3.org/2000/svg">\n';
-    // Black background serves as the 1-cell thick border
-    svg += '  <rect x="0" y="0" width="6" height="6" fill="black"/>\n';
+    var svg = '<svg ' + sizeAttr + ' viewBox="0 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg">\n';
+    // Black background serves as the 1-cell thick border on all four sides
+    svg += '  <rect x="0" y="0" width="8" height="8" fill="black"/>\n';
     
-    // Draw white cells for inner 4x4 matrix (bits that are 1)
-    for (var row = 0; row < 4; row++) {
-      for (var col = 0; col < 4; col++) {
-        if (inner[row][col] === 1) {
+    // Draw white cells for 6x6 inner matrix (bits that are 1)
+    for (var row = 0; row < 6; row++) {
+      for (var col = 0; col < 6; col++) {
+        if (matrix[row][col] === 1) {
           svg += '  <rect x="' + (col + 1) + '" y="' + (row + 1) + '" width="1" height="1" fill="white" stroke="white" stroke-width="0.01"/>\n';
         }
       }
