@@ -305,18 +305,20 @@ ArucoMarker.prototype = {
   },
 
   // Create an SVG image of the marker
+  // Approach: black background = border, white rectangles = inner cells with bit=1
   toSVG: function(size) {
-    var grid = this.markerGrid();
+    var inner = this.innerMatrix();
     var sizeAttr = size ? ('height="' + size + '" width="' + size + '"') : '';
     
     var svg = '<svg ' + sizeAttr + ' viewBox="0 0 6 6" version="1.1" xmlns="http://www.w3.org/2000/svg">\n';
-    svg += '  <rect x="0" y="0" width="6" height="6" fill="white"/>\n';
+    // Black background serves as the 1-cell thick border
+    svg += '  <rect x="0" y="0" width="6" height="6" fill="black"/>\n';
     
-    // Draw black cells
-    for (var row = 0; row < 6; row++) {
-      for (var col = 0; col < 6; col++) {
-        if (grid[row][col] === 1) {
-          svg += '  <rect x="' + col + '" y="' + row + '" width="1" height="1" fill="black" stroke="black" stroke-width="0.01"/>\n';
+    // Draw white cells for inner 4x4 matrix (bits that are 1)
+    for (var row = 0; row < 4; row++) {
+      for (var col = 0; col < 4; col++) {
+        if (inner[row][col] === 1) {
+          svg += '  <rect x="' + (col + 1) + '" y="' + (row + 1) + '" width="1" height="1" fill="white" stroke="white" stroke-width="0.01"/>\n';
         }
       }
     }
